@@ -1,0 +1,71 @@
+{% extends "main/index.html" %}
+{% block title %}Add Game{% endblock title %}
+{% block content %}
+<div class="add-game-container">
+    <h1>Add Your Own Game</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.name.label_tag }}
+            {{ form.name }}
+        </div>
+
+        <div class="form-group">
+            {{ form.description.label_tag }}
+            {{ form.description }}
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                {{ form.release_date.label_tag }}
+                {{ form.release_date }}
+            </div>
+            <div class="form-group">
+                {{ form.price.label_tag }}
+                {{ form.price }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form.logo.label_tag }}
+            {{ form.logo }}
+        </div>
+
+        <div class="form-group">
+            {{ form.img1.label_tag }}
+            {{ form.img1 }}
+        </div>
+
+        <div class="form-group">
+            {{ form.img2.label_tag }}
+            {{ form.img2 }}
+        </div>
+
+        <div class="form-group">
+            {{ form.img3.label_tag }}
+            {{ form.img3 }}
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                {{ form.genre.label_tag }}
+                {{ form.genre }}
+            </div>
+            <div class="form-group">
+                {{ form.creator.label_tag }}
+                {{ form.creator }}
+            </div>
+            <div class="form-group">
+                {{ form.rating.label_tag }}
+                {{ form.rating }}
+            </div>
+        </div>
+
+        <button type="submit" class="btn-submit">Complete</button>
+    </form>
+
+    {% if error %}
+        <div class="error-message">{{ error }}</div>
+    {% endif %}
+</div>
+{% endblock content %}

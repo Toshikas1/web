@@ -1,0 +1,61 @@
+{% load static %}
+{% get_media_prefix as MEDIA_URL %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Default Title{% endblock title %}</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="{{MEDIA_URL}}logo.png" alt="GameSphere Logo">
+                <p class="logo_title">GameSphere</p>
+            </div>
+            <ul class="nav-links">
+                <li>
+            <div class="dropdown">
+                <button class="dropdown-toggle">Меню</button>
+                <div class="dropdown-menu">
+                    <a href="{% url 'main' %}">Главная</a>
+                    <a href="{% url 'about' %}">О нас</a>
+                    <a href="{% url 'add_game' %}">Добавить игру</a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'profile' %}">Профиль</a>
+                        <a href="{% url 'logout' %}">Выйти</a>
+                    {% else %}
+                        <a href="{% url 'login' %}">Логин</a>
+                        <a href="{% url 'register' %}">Регистрация</a>
+                    {% endif %}
+                </div>
+            </div>
+        </li>
+    </ul>
+</nav>
+    </header>
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% elif message.tags == 'warning' %}alert-warning{% elif message.tags == 'info' %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+    {% endif %}
+    <main>
+        {% block content %}
+        <p>Default content if no other content is provided.</p>
+        {% endblock content %}
+    </main>
+    <footer>
+        <h1>Footer</h1>
+    </foote>
+{% block extra_js %}
+
+
+{% endblock extra_js %}
+</body>
+</html>

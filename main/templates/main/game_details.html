@@ -1,0 +1,132 @@
+{% extends "main/index.html" %}
+{% block title %}Game - {{game.name}}{% endblock title %}
+{% block content %}
+<div class="game-detail-container">
+    <div class="game-header">
+        <h1 class="game-title">{{game.name}}</h1>
+        <div class="game-meta">
+            <span class="game-rating">⭐ {{game.rating}}</span>
+            <span class="game-creator">by {{game.creator}}</span>
+            <span class="game-price">${{game.price}}</span>
+        </div>
+    </div>
+
+    <div class="game-slider">
+        <div class="slider-container">
+            <div class="slider-wrapper">
+                {% if game.img1 %}
+                    <div class="slide active">
+                        <img src="{{ game.img1.url }}" alt="{{game.name}} main image">
+                    </div>
+                {% endif %}
+                {% if game.img2 %}
+                    <div class="slide">
+                        <img src="{{ game.img2.url }}" alt="{{game.name}} image 2">
+                    </div>
+                {% endif %}
+                {% if game.img3 %}
+                    <div class="slide">
+                        <img src="{{ game.img3.url }}" alt="{{game.name}} image 3">
+                    </div>
+                {% endif %}
+            </div>
+            
+            <!-- Навигационные кнопки -->
+            {% if game.img2 or game.img3 %}
+                <button class="slider-btn prev-btn" onclick="changeSlide(-1)">❮</button>
+                <button class="slider-btn next-btn" onclick="changeSlide(1)">❯</button>
+                
+                <!-- Индикаторы -->
+                <div class="slider-indicators">
+                    {% if game.img1 %}
+                        <span class="indicator active" onclick="currentSlide(1)"></span>
+                    {% endif %}
+                    {% if game.img2 %}
+                        <span class="indicator" onclick="currentSlide(2)"></span>
+                    {% endif %}
+                    {% if game.img3 %}
+                        <span class="indicator" onclick="currentSlide(3)"></span>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="game-content">
+        <div class="game-info">
+            <div class="info-item">
+                <strong>Genre:</strong>
+                <span>{{game.genre}}</span>
+            </div>
+            <div class="info-item">
+                <strong>Release Date:</strong>
+                <span>{{game.release_date|date:"F d, Y"}}</span>
+            </div>
+        </div>
+
+        <div class="game-description">
+            <h2>About this game</h2>
+            <p>{{game.description}}</p>
+        </div>
+
+        {% if game.trailer %}
+            <div class="game-trailer">
+                <h2>Game Trailer</h2>
+                <video controls>
+                    <source src="{{ game.trailer.url }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        {% endif %}
+        
+    </div>
+    {% if is_buyed %}
+
+        <h1 class = "game_title">Уже куплена</h1>
+    {% else %}
+        <a class = "btn btn-primary" href = "{% url "payment" game.id %}" >BUY</a>
+    {% endif %}
+</div>
+
+{% endblock content %}
+{% block extra_js %}
+<script>
+    let currentSlideIndex = 0;
+    const slides = document.querySelectorAll('.slide');
+    const indicators = document.querySelectorAll('.indicator');
+    const totalSlides = slides.length;
+
+    function showSlide(index) {
+        // Скрываем все слайды
+        slides.forEach(slide => slide.classList.remove('active'));
+        indicators.forEach(indicator => indicator.classList.remove('active'));
+        
+        // Показываем нужный слайд
+        currentSlideIndex = index;
+        if (currentSlideIndex >= totalSlides) {
+            currentSlideIndex = 0;
+        }
+        if (currentSlideIndex < 0) {
+            currentSlideIndex = totalSlides - 1;
+        }
+        
+        slides[currentSlideIndex].classList.add('active');
+        if (indicators[currentSlideIndex]) {
+            indicators[currentSlideIndex].classList.add('active');
+        }
+    }
+
+    function changeSlide(direction) {
+        showSlide(currentSlideIndex + direction);
+    }
+
+    function currentSlide(index) {
+        showSlide(index - 1);
+    }
+
+    // Автоматическое переключение каждые 5 секунд
+    setInterval(() => {
+        changeSlide(1);
+    }, 5000);
+</script>
+{% endblock extra_js %}

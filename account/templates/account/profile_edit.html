@@ -1,0 +1,17 @@
+{% extends "main/index.html" %}
+{% block title %}Edit Profile{% endblock title %}
+{% block content %}
+<div class="form">
+    <form  method="post">
+        {% csrf_token %}
+        {{form.username}}
+        {{form.email}}
+        <button type="submit", class="btn btn-primary">Edit</button>
+    </form>
+</div>
+{{error}}
+
+
+
+
+{% endblock content %}

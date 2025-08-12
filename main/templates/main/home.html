@@ -1,0 +1,30 @@
+{% extends "main/index.html" %}
+{% block title %}Home{% endblock title %}
+
+{% block content %} 
+
+<h2>Авторы</h2>
+<ul>
+  {% for el in authors %}
+    <li>{{ el }}</li>
+  {% endfor %}
+</ul>
+<div class="cards-container">
+  {% for el in games %}
+  <a href="{% url "game_details" el.id %}">
+    <div class="game-card">
+      {% if el.logo %}
+        <img src="{{ el.logo.url }}" alt="{{ el.name }} Logo">
+      {% endif %}
+      <div class="game-card-content">
+        <h3>{{ el.name }}</h3>
+        <p><strong>Genre:</strong> {{ el.genre }}</p>
+        <p><strong>Rating:</strong> {{ el.rating }}</p>
+        <p><strong>Creator:</strong> {{ el.creator }}</p>
+      </div>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+
+{% endblock content %}
